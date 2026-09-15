@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A quale modello di apprendimento IA assomigli?</title>
+<meta name="description" content="Un quiz di 15 domande per riflettere sul proprio modo di imparare attraverso un’analogia con l’apprendimento automatico.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%231F5D9D%22%2F%3E%3Ctext%20x%3D%2216%22%20y%3D%2224%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2225%22%20font-family%3D%22Georgia%22%3E%3F%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #1F5D9D;
+    --purple-light: #D9D2E9;
+    --purple-mid: #684C63;
+    --purple-dark: #08245A;
+    --teal: #355E37;
+    --teal-light: #B6D7A8;
+    --teal-mid: #527747;
+    --amber: #76520F;
+    --amber-light: #FFE599;
+    --amber-mid: #A17520;
+    --pink: #684C63;
+    --pink-light: #F9CB9C;
+    --pink-mid: #946C64;
+    --gray-dark: #0B1F3A;
+    --gray-mid: #485469;
+    --gray-light: #E9EDF1;
+    --gray-border: #C4CDD6;
+    --white: #FFFFFF;
+    --bg: #F5F6F7;
+  }
+
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+
+
+ body {
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--gray-dark);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+
+  /* COVER */
+  #cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+
+
+
+
+  .cover-chip {
+    display: inline-block;
+    background: var(--purple-light);
+    color: var(--purple-dark);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 2rem;
+  }
+
+
+  .cover-title {
+    font-family: 'Lexend', Arial, sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.15;
+    color: var(--gray-dark);
+    max-width: 640px;
+    margin-bottom: 1.2rem;
+  }
+
+
+  .cover-title em {
+    font-style: italic;
+    color: var(--purple);
+  }
+
+
+
+
+  .cover-sub {
+    font-size: 1.05rem;
+    color: var(--gray-mid);
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+
+  .cover-profiles {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2.8rem;
+  }
+
+
+  .cover-tag {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1.5px solid;
+  }
+
+
+  .tag-su { background: var(--purple-light); color: var(--purple-dark); border-color: var(--purple-mid); }
+  .tag-ri { background: var(--teal-light); color: var(--teal); border-color: var(--teal-mid); }
+  .tag-ns { background: var(--amber-light); color: var(--amber); border-color: var(--amber-mid); }
+  .tag-ve { background: var(--pink-light); color: var(--pink); border-color: var(--pink-mid); }
+
+
+  .btn-start {
+    background: var(--purple);
+
+
+   color: white;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 100px;
+    font-family: Arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+    transition: background 0.2s, transform 0.1s;
+    position: relative;
+    z-index: 1;
+  }
+  .btn-start:hover { background: var(--purple-dark); transform: translateY(-1px); }
+  .btn-start:active { transform: scale(0.98); }
+
+
+  .cover-note {
+    margin-top: 1.5rem;
+    font-size: 12px;
+    color: var(--gray-border);
+  }
+
+
+  /* QUIZ */
+  #quiz-screen { display: none; padding: 0; }
+
+
+  .quiz-header {
+    position: sticky;
+    top: 0;
+    background: rgba(245,246,247,0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--gray-border);
+    padding: 1rem 2rem;
+
+
+   display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    z-index: 100;
+  }
+
+
+  .quiz-header-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    white-space: nowrap;
+  }
+
+
+  .progress-track {
+    flex: 1;
+    height: 4px;
+    background: var(--gray-border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+
+  .progress-fill {
+    height: 100%;
+    background: var(--purple);
+    border-radius: 2px;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+
+  .quiz-counter {
+    font-size: 13px;
+
+
+   font-weight: 500;
+    color: var(--purple);
+    white-space: nowrap;
+    min-width: 52px;
+    text-align: right;
+  }
+
+
+  .quiz-body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+  }
+
+
+  .q-category {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--purple-mid);
+    margin-bottom: 0.75rem;
+  }
+
+
+  .q-text {
+    font-family: 'Lexend', Arial, sans-serif;
+    font-size: clamp(1.3rem, 3vw, 1.75rem);
+    line-height: 1.35;
+    color: var(--gray-dark);
+    margin-bottom: 2rem;
+  }
+
+
+  .options-list {
+    display: flex;
+
+
+   flex-direction: column;
+    gap: 12px;
+    margin-bottom: 2.5rem;
+  }
+
+
+  .opt-btn {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: white;
+    border: 1.5px solid var(--gray-border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 0.95rem;
+    color: var(--gray-dark);
+    line-height: 1.55;
+    transition: border-color 0.15s, background 0.15s, transform 0.1s;
+    width: 100%;
+  }
+
+
+  .opt-btn:hover {
+    border-color: var(--purple-mid);
+    background: var(--purple-light);
+  }
+
+
+  .opt-btn.selected {
+    border-color: var(--purple);
+    background: var(--purple-light);
+  }
+
+
+
+
+  .opt-btn.selected .opt-letter {
+    background: var(--purple);
+    color: white;
+    border-color: var(--purple);
+  }
+
+
+  .opt-letter {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gray-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray-mid);
+    margin-top: 1px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+
+
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+
+  .btn-prev {
+    background: none;
+    border: 1.5px solid var(--gray-border);
+
+
+   border-radius: 100px;
+    padding: 12px 24px;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gray-mid);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-prev:hover { border-color: var(--gray-mid); color: var(--gray-dark); }
+  .btn-prev:disabled { opacity: 0.3; cursor: default; }
+
+
+  .btn-next {
+    background: var(--purple);
+    border: none;
+    border-radius: 100px;
+    padding: 12px 32px;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s, opacity 0.15s;
+  }
+  .btn-next:hover:not(:disabled) { background: var(--purple-dark); transform: translateY(-1px); }
+  .btn-next:disabled { opacity: 0.35; cursor: default; }
+
+
+  /* RESULT */
+  #result-screen { display: none; }
+
+
+  .result-hero {
+    padding: 3rem 2rem 2rem;
+
+
+   text-align: center;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+
+  .result-chip {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 100px;
+    margin-bottom: 1.2rem;
+  }
+
+
+  .result-title {
+    font-family: 'Lexend', Arial, sans-serif;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+
+  .result-tagline {
+    font-size: 1.05rem;
+    color: var(--gray-mid);
+    font-style: italic;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+
+  .result-desc-box {
+
+
+   border-radius: 16px;
+    padding: 1.5rem 1.75rem;
+    text-align: left;
+    margin-bottom: 2rem;
+    font-size: 0.97rem;
+    line-height: 1.7;
+  }
+
+
+  .result-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 2rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+
+  @media (max-width: 600px) {
+    .result-content { grid-template-columns: 1fr; }
+  }
+
+
+  .result-card {
+    background: white;
+    border: 1.5px solid var(--gray-border);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+  }
+
+
+  .result-card h3 {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+
+
+   text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 0.85rem;
+  }
+
+
+  .trait-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 0.6rem;
+    font-size: 0.88rem;
+    color: var(--gray-dark);
+    line-height: 1.5;
+  }
+
+
+  .trait-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+
+  .bars-section {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 2rem 2rem;
+  }
+
+
+  .bars-title {
+    font-size: 11px;
+    font-weight: 700;
+
+
+   letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray-mid);
+    margin-bottom: 1.2rem;
+  }
+
+
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+
+  .bar-label {
+    width: 200px;
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-dark);
+    text-align: right;
+  }
+
+
+  @media (max-width: 500px) {
+    .bar-label { width: 120px; font-size: 11px; }
+  }
+
+
+  .bar-track {
+    flex: 1;
+    height: 10px;
+    background: var(--gray-light);
+    border-radius: 5px;
+    overflow: hidden;
+
+
+ }
+
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    width: 0;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+
+
+  .bar-pct {
+    font-size: 13px;
+    font-weight: 600;
+    min-width: 36px;
+    color: var(--gray-mid);
+  }
+
+
+  .mixed-note {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 2rem 1.5rem;
+  }
+
+
+  .mixed-box {
+    background: var(--gray-light);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    font-size: 0.88rem;
+    color: var(--gray-mid);
+    line-height: 1.6;
+  }
+
+
+  .mixed-box strong { color: var(--gray-dark); }
+
+
+
+
+  .result-actions {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 2rem 4rem;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+
+  .btn-restart {
+    background: none;
+    border: 1.5px solid var(--gray-border);
+    border-radius: 100px;
+    padding: 12px 28px;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gray-mid);
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .btn-restart:hover { border-color: var(--gray-dark); color: var(--gray-dark); }
+
+
+  .btn-print {
+    background: var(--purple);
+    border: none;
+    border-radius: 100px;
+    padding: 12px 28px;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+
+   color: white;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-print:hover { background: var(--purple-dark); }
+
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--gray-border);
+    max-width: 720px;
+    margin: 0 auto 2rem;
+  }
+
+
+  @media print {
+    .quiz-header, .btn-restart, .btn-print, #cover, #quiz-screen { display: none !important; }
+    #result-screen { display: block !important; }
+    .result-content { grid-template-columns: 1fr 1fr; }
+  }
+
+  .cover-chip,.cover-tag,.cover-note,.quiz-header-label,.quiz-counter,.q-category,.result-chip,.result-card h3,.bars-title,.bar-label,.bar-pct {font-size:.875rem}
+  .cover-note {color:var(--gray-mid);max-width:540px}
+  .opt-btn,.trait-item,.result-desc-box,.mixed-box {font-size:1rem}
+  .q-category {color:var(--purple)}
+  button:focus-visible,summary:focus-visible {outline:3px solid var(--purple);outline-offset:4px}
+  .nav-row {gap:12px;flex-wrap:wrap}
+  .analogy-note {font-size:.875rem;color:var(--gray-mid);max-width:540px;margin:1rem auto 0}
+  details.result-card {max-width:656px;margin:0 auto 1.5rem}
+  details summary {cursor:pointer;font-weight:600;color:var(--purple);padding:4px 0}
+  details p {margin:.75rem 0}
+  @media(max-width:500px){.quiz-header{padding:1rem;gap:.75rem}.quiz-body{padding:2rem 1rem}.result-hero,.result-content,.bars-section,.mixed-note,.result-actions{padding-left:1rem;padding-right:1rem}.bar-label{width:105px;text-align:left}.bar-row{gap:8px}.btn-next,.btn-prev{padding:12px 18px}details.result-card{margin-left:1rem;margin-right:1rem}}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+  @media print{.result-card,.bar-row,.result-desc-box{break-inside:avoid}body{background:white}.bar-fill{print-color-adjust:exact;-webkit-print-color-adjust:exact}.result-hero{padding-top:0}details{display:none}}
+
+  /* Palette e tipografia delle slide del corso */
+  body {border-top:8px solid #1F5D9D;border-bottom:18px solid #08245A}
+  #cover {min-height:calc(100vh - 26px)}
+  .cover-title,.q-text,.result-title {font-weight:600;letter-spacing:-.025em}
+  .cover-title {font-size:clamp(2rem,5vw,3.4rem);max-width:760px}
+  .cover-title em {font-style:normal;color:#1F5D9D}
+  .cover-sub,.result-tagline {font-weight:400}
+  .cover-chip {background:#FFE599;color:#08245A}
+  .opt-btn {background:#FFFFFF}
+  .opt-btn.selected,.opt-btn:hover {background:#D9D2E9}
+  .result-card {background:#FFFFFF}
+  .result-card h3,.bars-title {color:#08245A}
+  .result-content .result-card:nth-child(1) {border-top:5px solid #F9CB9C}
+  .result-content .result-card:nth-child(2) {border-top:5px solid #B6D7A8}
+  @media print {body {border:0}}
+</style>
+</head>
+<body>
+
+
+<!-- COVER -->
+<div id="cover">
+  <div class="cover-chip">Strumento per la formazione</div>
+  <h1 class="cover-title">A quale modello di <em>apprendimento automatico</em> assomigli?</h1>
+  <p class="cover-sub">15 domande per riflettere sul tuo modo di imparare attraverso un’analogia con l’IA. Non esistono risposte giuste o sbagliate.</p>
+  <div class="cover-profiles">
+    <span class="cover-tag tag-su">Supervisionato</span>
+    <span class="cover-tag tag-ri">Per rinforzo</span>
+    <span class="cover-tag tag-ns">Non supervisionato</span>
+    <span class="cover-tag tag-ve">Versatile</span>
+
+
+ </div>
+  <button class="btn-start" onclick="startQuiz()">Inizia il quiz &rarr;</button>
+  <p class="analogy-note">Un’attività formativa, non un test psicologico. «Versatile» è un profilo del quiz, non una categoria tecnica di apprendimento automatico.</p>
+  <p class="cover-note">circa 5 minuti &nbsp;&bull;&nbsp; le risposte restano nel dispositivo</p>
+</div>
+
+
+<!-- QUIZ -->
+<div id="quiz-screen">
+  <div class="quiz-header">
+    <span class="quiz-header-label">Quiz</span>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+    <span class="quiz-counter" id="q-counter">1 / 15</span>
+  </div>
+  <div class="quiz-body">
+    <div class="q-category" id="q-cat"></div>
+    <h2 class="q-text" id="q-text" tabindex="-1"></h2>
+    <div class="options-list" id="options" role="group" aria-labelledby="q-text"></div>
+    <div class="nav-row">
+      <button class="btn-prev" id="btn-prev" onclick="prevQ()" disabled>&#8592; Indietro</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>Avanti &rarr;</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- RESULT -->
+<div id="result-screen"></div>
+
+
+<script>
+const QUESTIONS = [
+  { cat: "Stile di apprendimento", text: "Come preferisci imparare qualcosa di nuovo?",
+    opts: ["Ho bisogno di esempi chiari con spiegazioni dettagliate, step by step.","Ci provo, sbaglio, e correggo il tiro man mano.","Osservo, cerco pattern e connessioni senza aspettarmi una risposta giusta.","Dipende dal contesto: a volte ho bisogno di guida, a volte mi butto."],
+    sc: [{SU:3,RI:0,NS:0,VE:1},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Risposta al feedback", text: "Come reagisci a un feedback negativo?",
+
+
+   opts: ["Lo confronto con i criteri che già conoscevo e aggiusto il comportamento.","Mi pesa, ma lo uso subito come segnale per cambiare strategia.","Ci rifletto a lungo: capisco cosa non ha funzionato nel mio schema mentale.","Varia molto: a volte mi adatto subito, a volte ho bisogno di tempo."],
+    sc: [{SU:3,RI:0,NS:0,VE:1},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Problem solving", text: "Qual è il tuo approccio ai problemi senza una soluzione evidente?",
+    opts: ["Cerco un caso simile già risolto e mi baso su quello.","Provo più strade e tengo quella che dà i risultati migliori.","Cerco strutture nascoste nel problema, anche senza sapere dove portano.","Mi adatto al contesto: uso l'intuito e cambio approccio se serve."],
+    sc: [{SU:3,RI:1,NS:0,VE:1},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Processo decisionale", text: "Come prendi decisioni importanti?",
+    opts: ["Mi baso su regole consolidate e criteri ben definiti.","Valuto le conseguenze e scelgo l'opzione che mi dà la ricompensa maggiore.","Esploro le connessioni tra le opzioni, spesso senza una risposta netta.","Combino istinto, esperienza e dati: ogni situazione è diversa."],
+    sc: [{SU:3,RI:0,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:0,VE:3}] },
+  { cat: "Adattamento sociale", text: "Come ti comporti quando entri in un gruppo o ambiente nuovo?",
+    opts: ["Osservo come si comportano gli altri e mi adeguo alle norme esistenti.","Sperimento, capisco cosa funziona per me e cosa no.","Cerco i sottogruppi naturali, le dinamiche silenziose, le affinità.","Mi adatto velocemente al clima, cambiando registro se necessario."],
+    sc: [{SU:3,RI:0,NS:0,VE:1},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Motivazione", text: "Cosa ti motiva di più nel lavoro o nello studio?",
+    opts: ["Sapere che sto rispettando un percorso strutturato e ricevere conferme.","La soddisfazione immediata di un risultato ottenuto dopo tentativi.","Scoprire connessioni inaspettate, anche senza uno scopo pratico immediato.","La varietà di sfide: non amo fare sempre la stessa cosa."],
+    sc: [{SU:3,RI:0,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:0,RI:1,NS:1,VE:3}] },
+  { cat: "Tolleranza dell'ambiguità", text: "Come gestisci l'incertezza?",
+    opts: ["Ho bisogno di un quadro chiaro prima di agire.","L'incertezza è il mio territorio: imparo meglio quando non so come va a finire.","Mi immergo nei dati disponibili e cerco strutture anche nel caos.","Mi adatto: cambio metodo finché qualcosa funziona."],
+    sc: [{SU:3,RI:0,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Organizzazione cognitiva", text: "Come organizzi le tue idee?",
+    opts: ["Le categorizzo: ogni cosa ha il suo posto e la sua etichetta.","Le testo sul campo: un'idea vale solo se produce un effetto concreto.","Le lascio fluire finché emergono connessioni che non avevo previsto.","Le tengo fluide: posso passare da un frame all'altro a seconda del contesto."],
+    sc: [{SU:3,RI:0,NS:0,VE:1},{SU:0,RI:3,NS:1,VE:0},{SU:0,RI:0,NS:3,VE:1},{SU:0,RI:1,NS:1,VE:3}] },
+  { cat: "Approccio al compito", text: "Quando affronti un compito complesso, preferisci...",
+    opts: ["Avere istruzioni precise e un modello di riferimento da seguire.","Definire un obiettivo e cercare la strada migliore per raggiungerlo.","Esplorare il problema in autonomia e costruire la mia interpretazione.","Scegliere il metodo in base alla situazione, senza fissarmi su uno solo."],
+    sc: [{SU:3,RI:1,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Rapporto con le regole", text: "Come descrivi il tuo rapporto con le regole?",
+    opts: ["Le regole sono essenziali: mi danno sicurezza e orientamento.","Le regole sono punti di partenza: le rispetto se portano al risultato.","Preferisco costruirmi le mie regole osservando i pattern.","Dipende: a volte le seguo, a volte le metto in discussione."],
+    sc: [{SU:3,RI:0,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Gestione dell'errore", text: "Quando hai sbagliato qualcosa, come reagisci?",
+    opts: ["Confronto ciò che ho fatto con la risposta corretta e memorizzo la differenza.","Capisco cosa non ha funzionato e provo subito un'altra strategia.","Rifletto su quali schemi profondi hanno portato all'errore.","Dipende dall'errore: uso il metodo più utile per quel tipo di situazione."],
+    sc: [{SU:3,RI:0,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+{ cat: "Creatività", text: "Come descrivi il tuo processo creativo?",
+    opts: ["Parto da esempi già esistenti e li adatto al mio contesto.","Provo varianti diverse e tengo quella che funziona meglio.","Mi lascio guidare da associazioni libere e pattern emergenti.","Mescolo metodi diversi a seconda dell'ispirazione del momento."],
+    sc: [{SU:3,RI:1,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Esplorazione del nuovo", text: "Come ti comporti quando devi lavorare su qualcosa di completamente nuovo?",
+    opts: ["Cerco subito dei riferimenti e dei modelli esistenti da cui partire.","Mi butto e imparo dagli effetti delle mie azioni.","Osservo il campo a lungo prima di intervenire, cercando la struttura nascosta.","Alterno esplorazione e riferimenti in base a come si sviluppa la situazione."],
+    sc: [{SU:3,RI:0,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Autovalutazione", text: "Come valuti il tuo apprendimento?",
+    opts: ["Verifico se riesco a riprodurre correttamente ciò che mi è stato insegnato.","Misuro i progressi guardando ai risultati concreti che ottengo.","Capisco di aver imparato quando riconosco nuovi pattern o connessioni.","Uso criteri diversi a seconda del tipo di apprendimento che sto facendo."],
+    sc: [{SU:3,RI:0,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] },
+  { cat: "Contesto formativo", text: "Cosa ti rende più efficace in un contesto di apprendimento formale?",
+    opts: ["Avere obiettivi chiari, criteri espliciti e feedback strutturato.","Poter sperimentare, fallire e ricevere riscontri immediati.","Avere spazio per esplorare, riflettere e costruire la mia mappa concettuale.","La flessibilità di usare più approcci: struttura quando serve, autonomia quando aiuta."],
+    sc: [{SU:3,RI:0,NS:0,VE:0},{SU:0,RI:3,NS:0,VE:1},{SU:0,RI:0,NS:3,VE:1},{SU:1,RI:1,NS:1,VE:3}] }
+];
+
+
+const PROFILES = {
+  SU: {
+    label: "Apprendimento supervisionato",
+    tagline: "Apprendi meglio con struttura, etichette e feedback chiari.",
+    desc: "Hai bisogno di obiettivi definiti, esempi classificati e conferme lungo il percorso. Sei preciso, affidabile e sistematico — per analogia con un modello addestrato su dati etichettati. La tua forza è la coerenza: generalizzi bene da esperienze passate ben strutturate.",
+    traits: ["Ami le istruzioni chiare e gli obiettivi misurabili","Ti senti più sicuro con un feedback diretto e strutturato","Impari per esempi, analogie e modelli esistenti","Generalizzi bene da esperienze passate ben categorizzate","Confronti le tue risposte con criteri di riferimento espliciti"],
+    strategies: ["Usa rubriche di valutazione e checklist dettagliate","Richiedi feedback frequente e specifico","Studia tramite esempi risolti e casi modello","Struttura ogni apprendimento in fasi con obiettivi intermedi"],
+    color: "#1F5D9D", light: "#D9D2E9", mid: "#684C63", dark: "#08245A"
+  },
+  RI: {
+    label: "Apprendimento per rinforzo",
+    tagline: "Impari facendo, sbagliando e ottimizzando la rotta.",
+    desc: "Sei mosso dalla ricompensa: provi, ricevi segnali di successo o fallimento, e aggiusti la rotta. Non hai bisogno di una mappa completa — ti muovi nell'ambiente e scopri cosa funziona. Autonomo, adattivo, orientato ai risultati concreti.",
+    traits: ["Ti piace tentare e ottimizzare nel tempo","Il fallimento è informazione, non sconfitta","Sei motivato da ricompense concrete e progressive","Ti adatti bene ad ambienti dinamici e imprevedibili","Definisci la qualità di un'idea dalla sua efficacia pratica"],
+    strategies: ["Crea cicli brevi di azione-feedback-revisione","Usa sistemi di gamification o obiettivi a breve termine","Impara tramite simulazioni, prove e scenari reali","Traccia i tuoi progressi con metriche visibili e immediate"],
+    color: "#355E37", light: "#B6D7A8", mid: "#527747", dark: "#29492B"
+  },
+  NS: {
+
+
+   label: "Apprendimento non supervisionato",
+    tagline: "Cerchi pattern nascosti senza una risposta predefinita.",
+    desc: "Non hai bisogno di etichette né di premi: esplori alla ricerca di strutture latenti e connessioni inattese. Sei curioso, riflessivo e spesso scopri cose che gli altri non vedono — anche senza sapere dove stai andando.",
+    traits: ["Trovi connessioni dove gli altri vedono rumore o caos","Ami esplorare senza una meta prefissata","Hai intuizioni che emergono dal basso, non dall'alto","Sei bravo a riorganizzare idee in schemi nuovi e originali","Apprendi meglio con tempo e spazio per la riflessione libera"],
+    strategies: ["Lasciati spazio per la riflessione libera e il brainstorming","Usa mappe concettuali per visualizzare le connessioni","Esplora i temi in autonomia prima di cercare fonti esterne","Privilegia contesti di apprendimento aperti e non direttivi"],
+    color: "#76520F", light: "#FFE599", mid: "#A17520", dark: "#65440B"
+  },
+  VE: {
+    label: "Apprendimento versatile",
+    tagline: "Ti adatti al contesto, cambiando approccio quando serve.",
+    desc: "Non hai un unico stile: sai quando hai bisogno di guida, quando sperimentare, quando esplorare in libertà. Sei meta-cognitivo — rifletti su come stai imparando e aggiusti il metodo. In questo quiz, «versatile» indica la combinazione di approcci diversi.",
+    traits: ["Cambi strategia di apprendimento a seconda del contesto","Hai una buona consapevolezza metacognitiva","Integri approcci diversi senza restare rigido in uno","Sei efficace sia in ambienti strutturati che aperti","Riesci a trasferire le competenze tra domini diversi"],
+    strategies: ["Esplora diversi metodi di studio e tieni un diario riflessivo","Alterna periodi di apprendimento guidato e autonomo","Sfrutta la flessibilità per aiutare i colleghi con stili diversi","Usa l'auto-monitoraggio per capire quale approccio usare e quando"],
+    color: "#684C63", light: "#F9CB9C", mid: "#946C64", dark: "#59384B"
+  }
+};
+
+
+const LABELS = { SU: "Supervisionato", RI: "Per rinforzo", NS: "Non supervisionato", VE: "Versatile" };
+
+
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+
+
+function startQuiz() {
+  document.getElementById('cover').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  renderQ();
+}
+
+
+function renderQ() {
+  const q = QUESTIONS[current];
+  const pct = Math.round((current / QUESTIONS.length) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+
+
+ document.getElementById('q-counter').textContent = (current + 1) + ' / ' + QUESTIONS.length;
+  document.getElementById('q-cat').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('btn-prev').disabled = current === 0;
+
+
+  const isLast = current === QUESTIONS.length - 1;
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.textContent = isLast ? 'Vedi il risultato →' : 'Avanti →';
+  nextBtn.disabled = answers[current] === null;
+
+
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((txt, i) => {
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-pressed', String(answers[current] === i));
+    btn.className = 'opt-btn' + (answers[current] === i ? ' selected' : '');
+    btn.innerHTML = '<span class="opt-letter">' + letters[i] + '</span><span>' + txt + '</span>';
+    btn.onclick = () => selectOpt(i);
+    opts.appendChild(btn);
+  });
+  document.getElementById("q-text").focus();
+}
+
+
+function selectOpt(i) {
+  answers[current] = i;
+  document.querySelectorAll('.opt-btn').forEach((b, idx) => {
+    b.classList.toggle('selected', idx === i);
+    b.setAttribute('aria-pressed', String(idx === i));
+    b.querySelector('.opt-letter').style.background = idx === i ? 'var(--purple)' : '';
+    b.querySelector('.opt-letter').style.color = idx === i ? 'white' : '';
+    b.querySelector('.opt-letter').style.borderColor = idx === i ? 'var(--purple)' : '';
+  });
+  document.getElementById('btn-next').disabled = false;
+}
+
+
+
+
+function prevQ() {
+  if (current > 0) { current--; renderQ(); }
+}
+
+
+function nextQ() {
+  if (answers[current] === null) return;
+  if (current < QUESTIONS.length - 1) { current++; renderQ(); }
+  else showResult();
+}
+
+
+function showResult() {
+  const totals = {SU:0,RI:0,NS:0,VE:0};
+  answers.forEach((ans, qi) => {
+    if (ans === null) return;
+    const s = QUESTIONS[qi].sc[ans];
+    for (const k in s) totals[k] += s[k];
+  });
+
+
+  const sorted = Object.keys(totals).sort((a,b) => totals[b]-totals[a]);
+  const winner = sorted[0];
+  const second = sorted[1];
+  const isMixed = (totals[winner] - totals[second]) <= 3;
+  const maxVal = totals[winner];
+
+
+  const p = PROFILES[winner];
+
+
+  document.getElementById('quiz-screen').style.display = 'none';
+  const rs = document.getElementById('result-screen');
+  rs.style.display = 'block';
+
+
+  const traitsHtml = p.traits.map(t =>
+
+
+   `<div class="trait-item"><div class="trait-dot" style="background:${p.color}"></div><span>${t}</span></div>`
+  ).join('');
+
+
+  const stratHtml = p.strategies.map(s =>
+    `<div class="trait-item"><div class="trait-dot" style="background:${p.mid}"></div><span>${s}</span></div>`
+  ).join('');
+
+
+  const barsHtml = sorted.map(k => {
+    const pct = maxVal > 0 ? Math.round((totals[k] / maxVal) * 100) : 0;
+    return `<div class="bar-row">
+      <span class="bar-label">${LABELS[k]}</span>
+      <div class="bar-track"><div class="bar-fill" id="bf-${k}" style="background:${PROFILES[k].color}"></div></div>
+      <span class="bar-pct">${pct}%</span>
+    </div>`;
+  }).join('');
+
+
+  const mixedNote = isMixed ? `
+    <div class="mixed-note">
+      <div class="mixed-box">
+        <strong>Profilo misto:</strong> i tuoi punteggi per <em>${LABELS[winner]}</em> e <em>${LABELS[second]}</em> sono molto vicini.
+        Probabilmente integri entrambi gli stili a seconda del contesto. Consulta anche le schede dei profili vicini qui sotto.
+      </div>
+    </div>` : '';
+
+
+  rs.innerHTML = `
+    <div class="result-hero">
+      <div class="result-chip" style="background:${p.light};color:${p.dark};border:1.5px solid ${p.mid}">Il tuo profilo</div>
+      <h2 class="result-title" id="result-heading" tabindex="-1" style="color:${p.color}">${sorted.filter(k => totals[k] === maxVal).length > 1 ? "Profilo misto: " + sorted.filter(k => totals[k] === maxVal).map(k => LABELS[k]).join(" e ") : p.label}</h2>
+      <div class="result-tagline">${p.tagline}</div>
+      <div class="result-desc-box" style="background:${p.light};color:${p.dark}">${p.desc}</div>
+    </div>
+    <div class="result-content">
+
+
+     <div class="result-card">
+        <h3>Caratteristiche</h3>
+        ${traitsHtml}
+      </div>
+      <div class="result-card">
+        <h3>Strategie formative</h3>
+        ${stratHtml}
+      </div>
+    </div>
+    <div class="bars-section">
+      <div class="bars-title">Punteggi relativi al profilo prevalente</div>
+      ${barsHtml}
+      <p class="analogy-note">Il punteggio più alto vale 100%; gli altri sono rapportati a esso. Le percentuali non rappresentano probabilità e non devono sommare a 100.</p>
+    </div>
+    ${mixedNote}
+    ${isMixed ? sorted.filter(k => k !== winner && totals[winner]-totals[k] <= 3).map(k => `<details class="result-card"><summary>${PROFILES[k].label}</summary><p>${PROFILES[k].desc}</p><h3>Strategie formative</h3>${PROFILES[k].strategies.map(t => `<p>${t}</p>`).join('')}</details>`).join('') : ''}
+    <p class="analogy-note" style="padding:0 1rem 2rem">Il risultato è uno spunto di riflessione: non misura capacità né definisce uno stile di apprendimento fisso.</p>
+    <hr class="divider">
+    <div class="result-actions">
+      <button class="btn-restart" onclick="location.reload()">&#8592; Ricomincia</button>
+      <button class="btn-print" onclick="window.print()">Stampa o salva PDF</button>
+    </div>`;
+
+
+  document.getElementById("result-heading").focus();
+  window.scrollTo(0, 0);
+  setTimeout(() => {
+    sorted.forEach(k => {
+      const pct = maxVal > 0 ? Math.round((totals[k] / maxVal) * 100) : 0;
+      const el = document.getElementById('bf-' + k);
+      if (el) el.style.width = pct + '%';
+    });
+  }, 150);
+}
+
+if (document.modelContext?.registerTool) {
+  try {
+    Promise.resolve(document.modelContext.registerTool({
+      name:'read_quiz_state',title:'Leggi lo stato del quiz',
+      description:'Legge domanda corrente, opzioni e risposte già selezionate senza modificarle.',
+      inputSchema:{type:'object',properties:{},additionalProperties:false},
+      annotations:{readOnlyHint:true},
+      execute(input){if(!input || typeof input !== 'object' || Object.keys(input).length) throw new Error('Nessun parametro previsto');return {current:current+1,question:QUESTIONS[current].text,options:QUESTIONS[current].opts,answers:[...answers],completed:answers.every(x=>x!==null)};}
+    })).catch(()=>{});
+  } catch (_) {}
+}
+</script>
+</body>
+</html>
