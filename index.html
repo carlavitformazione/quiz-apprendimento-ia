@@ -634,6 +634,8 @@
   .result-content .result-card:nth-child(1) {border-top:5px solid #F9CB9C}
   .result-content .result-card:nth-child(2) {border-top:5px solid #B6D7A8}
   @media print {body {border:0}}
+  #cover > .analogy-note {max-width:960px}
+  .versatile-note {display:inline-block}
 </style>
 </head>
 <body>
@@ -646,14 +648,14 @@
   <p class="cover-sub">15 domande per riflettere sul tuo modo di imparare attraverso un’analogia con l’IA. Non esistono risposte giuste o sbagliate.</p>
   <div class="cover-profiles">
     <span class="cover-tag tag-su">Supervisionato</span>
-    <span class="cover-tag tag-ri">Per rinforzo</span>
     <span class="cover-tag tag-ns">Non supervisionato</span>
+    <span class="cover-tag tag-ri">Per rinforzo</span>
     <span class="cover-tag tag-ve">Versatile</span>
 
 
  </div>
   <button class="btn-start" onclick="startQuiz()">Inizia il quiz &rarr;</button>
-  <p class="analogy-note">Un’attività formativa, non un test psicologico. «Versatile» è un profilo del quiz, non una categoria tecnica di apprendimento automatico.</p>
+  <p class="analogy-note">Un’attività formativa, non un test psicologico. <br><span class="versatile-note">"Versatile" è un profilo del quiz, non una categoria tecnica di apprendimento automatico.</span></p>
   <p class="cover-note">circa 5 minuti &nbsp;&bull;&nbsp; le risposte restano nel dispositivo</p>
 </div>
 
@@ -763,7 +765,7 @@ const PROFILES = {
   VE: {
     label: "Apprendimento versatile",
     tagline: "Ti adatti al contesto, cambiando approccio quando serve.",
-    desc: "Non hai un unico stile: sai quando hai bisogno di guida, quando sperimentare, quando esplorare in libertà. Sei meta-cognitivo — rifletti su come stai imparando e aggiusti il metodo. In questo quiz, «versatile» indica la combinazione di approcci diversi.",
+    desc: "Non hai un unico stile: sai quando hai bisogno di guida, quando sperimentare, quando esplorare in libertà. Sei meta-cognitivo — rifletti su come stai imparando e aggiusti il metodo. In questo quiz, \"Versatile\" indica la combinazione di approcci diversi.",
     traits: ["Cambi strategia di apprendimento a seconda del contesto","Hai una buona consapevolezza metacognitiva","Integri approcci diversi senza restare rigido in uno","Sei efficace sia in ambienti strutturati che aperti","Riesci a trasferire le competenze tra domini diversi"],
     strategies: ["Esplora diversi metodi di studio e tieni un diario riflessivo","Alterna periodi di apprendimento guidato e autonomo","Sfrutta la flessibilità per aiutare i colleghi con stili diversi","Usa l'auto-monitoraggio per capire quale approccio usare e quando"],
     color: "#684C63", light: "#F9CB9C", mid: "#946C64", dark: "#59384B"
